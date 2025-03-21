@@ -30,7 +30,7 @@ jobs:
           concurrent_skipping: 'same_content_newer'
 
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.2.2
 
       - name: Prepare matrix
         id: matrix
@@ -53,7 +53,7 @@ jobs:
           install: clang-format-17
 
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.2.2
 
       - name: Check style
         run: ./infra/tools/pamqp-format-check
@@ -71,15 +71,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.2.2
 
       - name: Install packages
-        uses: awalsh128/cache-apt-pkgs-action@v1.4.1
+        uses: awalsh128/cache-apt-pkgs-action@v1.4.3
         with:
           packages: cmake
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.29.0
+        uses: shivammathur/setup-php@2.32.0
         with:
           php-version: ${{ matrix.php-version }}
           extensions: json
@@ -130,7 +130,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.2.2
 
       - name: Configure hostnames
         run: sudo echo "127.0.0.1 ${{ env.PHP_AMQP_SSL_HOST }}" | sudo tee -a /etc/hosts
@@ -142,13 +142,13 @@ jobs:
         run: docker compose up -d rabbitmq
 
       - name: Install packages
-        uses: awalsh128/cache-apt-pkgs-action@v1.4.1
+        uses: awalsh128/cache-apt-pkgs-action@v1.4.3
         with:
           packages: cmake valgrind libc6-dbg gcc clang
           version: ${{ (matrix.librabbitmq-version == '0.10.0' || matrix.librabbitmq-version == '0.9.0' || matrix.librabbitmq-version == '0.8.0') && 'ubuntu-20.04' || 'ubuntu-22.04' }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.29.0
+        uses: shivammathur/setup-php@2.32.0
         with:
           php-version: ${{ matrix.php-version }}
           coverage: none
